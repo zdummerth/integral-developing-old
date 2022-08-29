@@ -1,7 +1,9 @@
 import type { NextPage, GetStaticProps } from "next";
+import { useRef, useEffect } from "react";
 import { storefrontClient } from "../lib/callShopify";
 import CollectionList from "../components/products/CollectionList";
 import hearseImg from "../public/banners/banner-hearse.png";
+import havoc from "../public/havoc-king-black.png";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
@@ -11,10 +13,9 @@ const Home = (props: any) => {
   // console.log(props);
   const fc = props.collections.data.collections.edges
     .filter(({ node }: { node: any }) =>
-      ["Dry-Fits", "Accessories", "T-Shirts"].includes(node.title)
+      ["Dry-Fits", "T-Shirts", "Accessories"].includes(node.title)
     )
     .map(({ node }: { node: any }) => node);
-  console.log(fc);
 
   return (
     <div className={styles.container}>
@@ -34,6 +35,15 @@ const Home = (props: any) => {
             layout="responsive"
           />
         </div>
+        {/* <div className="relative w-full h-[calc(100vh-60px)]">
+          <Image
+            src={havoc}
+            alt="Vercel Logo"
+            placeholder="blur"
+            layout="fill"
+            objectFit="contain"
+          />
+        </div> */}
         <CollectionList collections={fc} />
       </main>
 

@@ -1,8 +1,7 @@
-import type { NextPage, GetStaticProps } from "next";
-import { useRef, useEffect } from "react";
+import type { GetStaticProps } from "next";
 import { storefrontClient } from "../lib/callShopify";
 import CollectionList from "../components/products/CollectionList";
-import hearseImg from "../public/banners/banner-hearse.png";
+import hearseImg from "../public/banners/banner-hearse-purple.jpg";
 import havoc from "../public/havoc-king-black.png";
 import Head from "next/head";
 import Image from "next/image";
@@ -11,9 +10,20 @@ import Header from "../components/Navigation";
 
 const Home = (props: any) => {
   // console.log(props);
+  const allCollections = props.collections.data.collections.edges.map(
+    ({ node }: { node: any }) => node
+  );
   const fc = props.collections.data.collections.edges
     .filter(({ node }: { node: any }) =>
       ["Dry-Fits", "T-Shirts", "Accessories"].includes(node.title)
+    )
+    .map(({ node }: { node: any }) => node);
+
+  const discs = props.collections.data.collections.edges
+    .filter(({ node }: { node: any }) =>
+      ["Westside", "Dynamic Discs", "Innova", "Gateway", "Discmania"].includes(
+        node.title
+      )
     )
     .map(({ node }: { node: any }) => node);
 
@@ -27,6 +37,13 @@ const Home = (props: any) => {
 
       <main className={`${styles.main} bg-zinc-900 text-white`}>
         <Header />
+        <CollectionList
+          collections={allCollections}
+          config={{
+            enlarge_first: false,
+            action: "x_scroll",
+          }}
+        />
         <div className="relative w-full">
           <Image
             src={hearseImg}
@@ -35,30 +52,24 @@ const Home = (props: any) => {
             layout="responsive"
           />
         </div>
-        {/* <div className="relative w-full h-[calc(100vh-60px)]">
-          <Image
-            src={havoc}
-            alt="Vercel Logo"
-            placeholder="blur"
-            layout="fill"
-            objectFit="contain"
-          />
-        </div> */}
-        <CollectionList collections={fc} />
+        <CollectionList
+          collections={fc}
+          config={{
+            enlarge_first: true,
+            action: "standard",
+          }}
+        />
+        <CollectionList
+          collections={discs}
+          config={{
+            enlarge_first: false,
+            // action: "standard",
+            action: "x_scroll_then_grid",
+          }}
+        />
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <footer className={styles.footer}></footer>
     </div>
   );
 };

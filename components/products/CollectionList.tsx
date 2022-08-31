@@ -12,7 +12,7 @@ const getStyles = ({
     container: `flex overflow-auto w-full p-2 sm:hidden`,
     child: `relative flex-shrink-0 mr-2 flex flex-col items-center group`,
     img_container: `relative w-16 h-16 rounded-full overflow-hidden border`,
-    title: `w-full text-center truncate w-32`,
+    title: `w-full text-center w-24`,
   };
 
   const standard = {

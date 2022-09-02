@@ -1,63 +1,20 @@
 import type { GetStaticProps } from "next";
 import { storefrontClient } from "../lib/callShopify";
-import CollectionList from "../components/products/CollectionList";
-import Head from "next/head";
-import Image from "next/image";
+import unsplash from "../lib/callUnsplash";
 import styles from "../styles/Home.module.css";
-import Header from "../components/Navigation";
+import Page from "../components/Page";
 
 const Home = (props: any) => {
-  // console.log(props.sections);
-  const filterCollections = (allCollections: any, filterOn: any) => {
-    return allCollections.filter((node: any) => filterOn.includes(node.title));
-  };
-
-  const allCollections = props.collections.data.collections.edges.map(
-    ({ node }: { node: any }) => node
-  );
-
+  // console.log(props);
+  const testhtml = `<div className="p-12">Tester</div>`;
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Dark Ace Disc Golf | Home</title>
-        <meta name="description" content="Welcome to Dark Ace Disc Golf" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={`${styles.main} bg-zinc-900 text-white`}>
-        <Header />
-        {props.sections.map((section: any, ind: number) => {
-          console.log(section);
-          switch (section.name) {
-            case "collection_list": {
-              return (
-                <CollectionList
-                  key={ind}
-                  collections={filterCollections(
-                    allCollections,
-                    section.collections
-                  )}
-                  config={section.config}
-                />
-              );
-            }
-            case "image_banner": {
-              return (
-                <div className="relative w-full">
-                  <Image
-                    src={section.image}
-                    alt="Vercel Logo"
-                    placeholder="blur"
-                    layout="responsive"
-                  />
-                </div>
-              );
-            }
-          }
-        })}
-      </main>
-
-      <footer className={styles.footer}></footer>
+      <div dangerouslySetInnerHTML={{ __html: testhtml }} />
+      <Page
+        sections={props.sections}
+        title="Home"
+        description="Welcome To Dark Ace"
+      />
     </div>
   );
 };
@@ -97,8 +54,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
     {
       name: "collection_list",
       collections: [
-        "Westside",
         "Dynamic Discs",
+        "Westside",
         "Innova",
         "Gateway",
         "Discmania",
@@ -109,10 +66,24 @@ export const getStaticProps: GetStaticProps = async (context) => {
       },
     },
   ];
-  const response = await storefrontClient.query({
+
+  const allCollections = sections
+    .filter((section) => section.collections)
+    .map((section: any) => section.collections)
+    .flat();
+
+  const unique = [...new Set(allCollections)];
+  const collectionQuery = unique
+    .map((c: string) => `title:"${c}"`)
+    .join(" OR ");
+  // console.log(collectionQuery);
+
+  // console.log(unique);
+
+  const response: any = await storefrontClient.query({
     data: {
-      query: `{
-        collections(first: 30) {
+      query: `query ($first: Int, $query: String) {
+        collections(first: $first, query: $query) {
           edges {
             node {
               id
@@ -130,13 +101,45 @@ export const getStaticProps: GetStaticProps = async (context) => {
           }
         }
       }`,
+      variables: {
+        first: unique.length,
+        query: collectionQuery,
+      },
     },
   });
+
+  const collectionData = response.body.data.collections.edges.map(
+    ({ node }: { node: any }) => node
+  );
+
+  const sectionsWithData = sections.map((section) => {
+    let newCollections = null;
+    if (section.collections) {
+      newCollections = section.collections.map((c) =>
+        collectionData.find((cd: any) => cd.title === c)
+      );
+    }
+    return {
+      ...section,
+      collections: newCollections,
+    };
+  });
+
+  // console.log(sectionsWithData);
+
+  // const photos = await unsplash.search.getCollections({
+  //   query: "cat",
+  //   page: 1,
+  //   perPage: 2,
+  // });
+
+  // console.log(photos.response);
 
   return {
     props: {
       collections: response.body,
-      sections,
+      sections: sectionsWithData,
+      // photos: photos.response,
     },
   };
 };

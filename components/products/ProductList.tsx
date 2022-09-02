@@ -15,6 +15,13 @@ const getStyles = ({
     title: `w-full text-center w-24`,
   };
 
+  const basic_grid = {
+    container: `w-full max-w-5xl p-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2`,
+    child: `relative aspect-[1/1] flex flex-col items-center group border`,
+    img_container: `relative w-full h-full`,
+    title: `w-full text-center`,
+  };
+
   const standard = {
     container: `w-full max-w-5xl p-4 grid grid-cols-9 gap-2`,
     child: `relative border group bg-black aspect-[1/1] col-span-full sm:col-span-3 sm:row-span-3 hover:cursor-pointer
@@ -37,6 +44,9 @@ const getStyles = ({
     case "x_scroll": {
       return x_scroll;
     }
+    case "basic_grid": {
+      return basic_grid;
+    }
     case "standard": {
       return standard;
     }
@@ -49,41 +59,45 @@ const getStyles = ({
   }
 };
 
-function Collection({ collection, config }: { collection: any; config: any }) {
+function Product({ product, config }: { product: any; config: any }) {
   return (
-    <Link href={`/collection/${collection.handle}`}>
+    <Link href={`/product/${product.handle}`}>
       <a className={config.child}>
         <div className={config.img_container}>
-          {collection.image && (
+          {product.featuredImage && (
             <Image
-              src={collection.image.src}
-              alt={collection.title}
+              src={product.featuredImage.src}
+              alt={product.title}
               layout="fill"
               objectFit="contain"
               className="group-hover:scale-110 transition-all duration-300"
             />
           )}
         </div>
-        <div className={config.title}>{collection.title}</div>
+        <div className={config.title}>{product.title}</div>
+        <div>{product.price}</div>
       </a>
     </Link>
   );
 }
 
-export default function CollectionList({
-  collections,
+export default function ProductList({
+  products,
   config,
+  collection,
 }: // config,
 {
-  collections: any;
+  products: any;
   config?: any;
+  collection: any;
 }) {
   const styles = getStyles(config);
   return (
     <>
+      <h1>{collection.title}</h1>
       <div className={styles.container}>
-        {collections.map((c: any, ind: number) => (
-          <Collection key={c.id} collection={c} config={styles} />
+        {products.map((c: any, ind: number) => (
+          <Product key={c.id} product={c} config={styles} />
         ))}
       </div>
     </>

@@ -1,23 +1,16 @@
-import { storefrontClient } from "lib/callShopify";
-import Head from "next/head";
-import ProductCard from "components/products/ProductCard";
+import { storefrontClient } from "../../lib/callShopify";
+import Page from "../../components/Page";
 
-function Product({ collection }) {
-  console.log({ collection });
+export default function CollectionPage({ collection, products, sections }) {
+  console.log({ products });
   return (
     <div>
-      <Head>
-        {/* <title>{product.title} | Disc Market</title> */}
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className="std-div">
-        {/* <ProductCard product={product} showVariantPicker={true} /> */}
-      </main>
+      <Page sections={sections} />
     </div>
   );
 }
 
-export async function getServerSideProps({ params }) {
+export async function getStaticProps({ params }) {
   // console.log(params.id)
 
   const response = await storefrontClient.query({
@@ -27,12 +20,17 @@ export async function getServerSideProps({ params }) {
           id
           handle
           title
-          products {
+          products(first: 20) {
             edges {
               node {
                 id
                 title
                 handle
+                tags
+                options {
+                  name
+                  values
+                }
                 featuredImage {
                   altText
                   height
@@ -43,16 +41,58 @@ export async function getServerSideProps({ params }) {
               }
             }
           }
-      }`,
+        }
+      }
+      `,
       variables: {
         handle: params.handle,
       },
     },
   });
 
+  const products = response.body.data.collectionByHandle.products.edges.map(
+    ({ node }) => node
+  );
+
+  const sections = [
+    {
+      name: "product_list",
+      products,
+      collection: response.body.data.collectionByHandle,
+      config: {
+        enlarge_first: false,
+        action: "basic_grid",
+      },
+    },
+  ];
   return {
-    props: { collection: response.body.data.collectionByHandle },
+    props: {
+      collection: response.body.data.collectionByHandle,
+      products,
+      sections,
+    },
   };
 }
 
-export default Product;
+export async function getStaticPaths() {
+  const response = await storefrontClient.query({
+    data: {
+      query: `{
+        collections(first: 250) {
+          edges {
+            node {
+              handle
+            }
+          }
+        }
+      }`,
+    },
+  });
+
+  const paths = response.body.data.collections.edges.map(({ node }) => ({
+    params: { handle: node.handle },
+  }));
+
+  // { fallback: false } means other routes should 404
+  return { paths, fallback: false };
+}

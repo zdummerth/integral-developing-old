@@ -70,7 +70,7 @@ export async function getStaticProps({ params }) {
               }
             }
           }
-          variants(first: 5) {
+          variants(first: 30) {
             edges {
               node {
                 id
@@ -98,10 +98,69 @@ export async function getStaticProps({ params }) {
     },
   });
 
+  const relatedProductsQuery = product.body.data.product.tags
+    .map((c) => `tag:${c}`)
+    .join(" OR ");
+  console.log("related; ", relatedProductsQuery);
+
+  const relatedProducts = await storefrontClient.query({
+    data: {
+      query: `query getRelatedProducts($first: Int!, $query: String!) {
+        products(first: $first, query: $query) {
+          edges {
+            node {
+              id
+              title
+              handle
+              publishedAt
+              tags
+              title
+              totalInventory
+              descriptionHtml
+              images(first: 2) {
+                edges {
+                  node {
+                    altText
+                    height
+                    id
+                    src
+                    url
+                    width
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      `,
+      variables: {
+        first: 4,
+        query: `(${relatedProductsQuery}) AND -title:"${product.body.data.product.title}"`,
+      },
+    },
+  });
+
   const sections = [
     {
       name: "product_card",
-      product: product.body.data.product,
+      product: {
+        ...product.body.data.product,
+        images: product.body.data.product.images.edges.map(({ node }) => node),
+      },
+    },
+    {
+      name: "product_list",
+      heading: "You May Also Like",
+      className: "mt-24",
+      products: relatedProducts.body.data.products.edges.map(({ node }) => ({
+        ...node,
+        images: node.images.edges.map(({ node }) => node),
+      })),
+      config: {
+        enlarge_first: false,
+        action: "basic_grid",
+      },
     },
   ];
 

@@ -1,12 +1,14 @@
 import { useState } from "react"; // import state
+import Link from "next/link";
+import Cart from "./Cart";
 
 export default function Header() {
   const [isNavOpen, setIsNavOpen] = useState(false); // initiate isNavOpen state with false
 
   return (
-    <div className="flex items-center justify-between py-4">
-      <nav className="">
-        <section className="MOBILE-MENU flex lg:hidden">
+    <div className="w-full">
+      <nav className="w-full p-4 mb-2 border-b-2 lg:flex lg:justify-end">
+        <section className="MOBILE-MENU flex items-center justify-around w-full lg:hidden">
           <div
             className="HAMBURGER-ICON space-y-2"
             onClick={() => setIsNavOpen((prev) => !prev)} // toggle isNavOpen state on click
@@ -15,6 +17,7 @@ export default function Header() {
             <span className="block h-0.5 w-8 animate-pulse bg-gray-600"></span>
             <span className="block h-0.5 w-8 animate-pulse bg-gray-600"></span>
           </div>
+          <Cart />
 
           <div
             className={
@@ -40,10 +43,14 @@ export default function Header() {
             </div>
             <ul className="MENU-LINK-MOBILE-OPEN flex flex-col items-center justify-between min-h-[250px]">
               <li className="border-b border-gray-400 my-8 uppercase">
-                <a href="/about">About</a>
+                <Link href="/">
+                  <a>Home</a>
+                </Link>
               </li>
               <li className="border-b border-gray-400 my-8 uppercase">
-                <a href="/portfolio">Portfolio</a>
+                <Link href="/">
+                  <a>Collections</a>
+                </Link>
               </li>
               <li className="border-b border-gray-400 my-8 uppercase">
                 <a href="/contact">Contact</a>
@@ -54,13 +61,20 @@ export default function Header() {
 
         <ul className="DESKTOP-MENU hidden space-x-8 lg:flex">
           <li>
-            <a href="/about">About</a>
+            <Link href="/">
+              <a>Home</a>
+            </Link>
           </li>
           <li>
-            <a href="/portfolio">Portfolio</a>
+            <Link href="/">
+              <a>Collections</a>
+            </Link>
           </li>
           <li>
             <a href="/contact">Contact</a>
+          </li>
+          <li>
+            <Cart />
           </li>
         </ul>
       </nav>

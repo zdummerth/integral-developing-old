@@ -6,10 +6,8 @@ import Page from "../components/Page";
 
 const Home = (props: any) => {
   // console.log(props);
-  const testhtml = `<div className="p-12">Tester</div>`;
   return (
     <div className={styles.container}>
-      <div dangerouslySetInnerHTML={{ __html: testhtml }} />
       <Page
         sections={props.sections}
         title="Home"

@@ -2,7 +2,7 @@ import { storefrontClient } from "../../lib/callShopify";
 import Page from "../../components/Page";
 
 export default function CollectionPage({ collection, products, sections }) {
-  console.log({ products });
+  console.log({ sections });
   return (
     <div>
       <Page sections={sections} />
@@ -31,12 +31,16 @@ export async function getStaticProps({ params }) {
                   name
                   values
                 }
-                featuredImage {
-                  altText
-                  height
-                  id
-                  src
-                  width
+                images(first: 5) {
+                  edges {
+                    node {
+                      altText
+                      height
+                      id
+                      src
+                      width
+                    }
+                  }
                 }
               }
             }
@@ -51,7 +55,10 @@ export async function getStaticProps({ params }) {
   });
 
   const products = response.body.data.collectionByHandle.products.edges.map(
-    ({ node }) => node
+    ({ node }) => ({
+      ...node,
+      images: node.images.edges.map(({ node }) => node),
+    })
   );
 
   const sections = [

@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import useAvailability from "../../lib/useAvailability";
 
 const getStyles = ({
   enlarge_first,
@@ -16,14 +18,14 @@ const getStyles = ({
   };
 
   const basic_grid = {
-    container: `w-full max-w-5xl p-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2`,
-    child: `relative aspect-[1/1] flex flex-col items-center group border`,
-    img_container: `relative w-full h-full`,
+    container: `w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2`,
+    child: `flex flex-col group border`,
+    img_container: `relative w-full aspect-[1/1]`,
     title: `w-full text-center`,
   };
 
   const standard = {
-    container: `w-full max-w-5xl p-4 grid grid-cols-9 gap-2`,
+    container: `w-full grid grid-cols-9 gap-2`,
     child: `relative border group bg-black aspect-[1/1] col-span-full sm:col-span-3 sm:row-span-3 hover:cursor-pointer
       ${enlarge_first && `first:sm:col-span-6 first:sm:row-span-6`}
       `,
@@ -32,7 +34,7 @@ const getStyles = ({
   };
 
   const x_scroll_then_grid = {
-    container: `w-full max-w-5xl p-4 flex overflow-auto sm:grid sm:grid-cols-2 lg:grid-cols-5 sm:gap-2`,
+    container: `w-full flex overflow-auto sm:grid sm:grid-cols-2 lg:grid-cols-5 sm:gap-2`,
     child: `relative border group bg-black flex-shrink-0 w-64 h-64 sm:h-auto sm:w-auto sm:aspect-[1/1] mr-2 sm:mr-0 hover:cursor-pointer
       ${enlarge_first && `first:sm:col-span-6 first:sm:row-span-6`}
       `,
@@ -64,9 +66,9 @@ function Product({ product, config }: { product: any; config: any }) {
     <Link href={`/product/${product.handle}`}>
       <a className={config.child}>
         <div className={config.img_container}>
-          {product.featuredImage && (
+          {product.images[0] && (
             <Image
-              src={product.featuredImage.src}
+              src={product.images[0].src}
               alt={product.title}
               layout="fill"
               objectFit="contain"
@@ -83,23 +85,55 @@ function Product({ product, config }: { product: any; config: any }) {
 
 export default function ProductList({
   products,
+  heading,
   config,
   collection,
+  className,
 }: // config,
 {
   products: any;
   config?: any;
   collection: any;
+  heading?: string;
+  className?: string;
 }) {
   const styles = getStyles(config);
+  const tags = [...new Set(products.map((p: any) => p.tags).flat())];
+  const [filterOn, setFilterOn] = useState("all");
+  const filteredProducts =
+    filterOn === "all"
+      ? products
+      : products.filter((p: any) => p.tags.includes(filterOn));
+  console.log(tags);
+
+  const { data } = useAvailability({
+    titles: filteredProducts.map((p: any) => p.title),
+  });
+  console.log(data);
   return (
-    <>
-      <h1>{collection.title}</h1>
+    <div className={`w-full p-2 ${className}`}>
+      {heading && <h3 className="my-2 text-xl">{heading}</h3>}
+      <div>
+        <div>Filter</div>
+        <select
+          onChange={(e: any) => setFilterOn(e.target.value)}
+          value={filterOn}
+          className="bg-black"
+        >
+          <option value="all">All</option>
+
+          {tags.map((t: any) => (
+            <option value={t} key={t}>
+              {t}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className={styles.container}>
-        {products.map((c: any, ind: number) => (
+        {filteredProducts.map((c: any, ind: number) => (
           <Product key={c.id} product={c} config={styles} />
         ))}
       </div>
-    </>
+    </div>
   );
 }

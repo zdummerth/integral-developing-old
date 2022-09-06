@@ -27,7 +27,9 @@ const Page = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={`${styles.main} bg-zinc-900 text-white`}>
+      <main
+        className={`${styles.main} bg-zinc-900 text-white max-w-6xl mx-auto`}
+      >
         <Header />
         {children}
         {sections.map((section: any, ind: number) => {
@@ -46,13 +48,20 @@ const Page = ({
                 <ProductList
                   key={ind}
                   collection={section.collection}
+                  heading={section.heading}
+                  className={section.className}
                   products={section.products}
                   config={section.config}
                 />
               );
             }
             case "product_card": {
-              return <ProductCard key={ind} product={section.product} />;
+              return (
+                <ProductCard
+                  key={ind + section.product.title}
+                  product={section.product}
+                />
+              );
             }
             case "image_banner": {
               return (

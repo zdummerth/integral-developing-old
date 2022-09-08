@@ -5,8 +5,6 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Header from "../components/Navigation";
-// import bannerImg from "../public/banners/banner-hearse-purple.jpg";
-import { AnyTxtRecord } from "dns";
 
 interface PageProps {
   sections: any;
@@ -69,8 +67,11 @@ const Page = ({
               return (
                 <div key={ind} className="relative w-full">
                   <Image
-                    src={section.image}
+                    src={section.image.originalFileUrl}
+                    width={section.image.contentInfo.image.width}
+                    height={section.image.contentInfo.image.height}
                     alt="Vercel Logo"
+                    blurDataURL={section.image.blurDataURL}
                     placeholder="blur"
                     layout="responsive"
                   />

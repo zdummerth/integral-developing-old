@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
     res.status(200).json(data.body);
   } catch (error) {
-    console.log("ERROR MOTHERFUCKER: ", error);
+    console.log("ERROR MOTHERFUCKER: ", error.response);
     res.status(400).send();
   }
 }

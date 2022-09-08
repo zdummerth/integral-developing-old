@@ -5,6 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Header from "../components/Navigation";
+// import bannerImg from "../public/banners/banner-hearse-purple.jpg";
 import { AnyTxtRecord } from "dns";
 
 interface PageProps {
@@ -19,6 +20,7 @@ const Page = ({
   description = "Page Description",
   children,
 }: PageProps) => {
+  // console.log(bannerImg);
   return (
     <>
       <Head>
@@ -28,7 +30,7 @@ const Page = ({
       </Head>
 
       <main
-        className={`${styles.main} bg-zinc-900 text-white max-w-6xl mx-auto`}
+        className={`${styles.main} bg-zinc-900 text-white max-w-6xl mx-auto flex flex-col items-center`}
       >
         <Header />
         {children}
@@ -43,7 +45,7 @@ const Page = ({
                 />
               );
             }
-            case "product_list": {
+            case "product_list_by_tags": {
               return (
                 <ProductList
                   key={ind}
@@ -74,6 +76,9 @@ const Page = ({
                   />
                 </div>
               );
+            }
+            default: {
+              return <div key={ind}>Unable to find section</div>;
             }
           }
         })}

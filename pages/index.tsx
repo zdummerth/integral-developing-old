@@ -1,11 +1,11 @@
 import type { GetStaticProps } from "next";
-import { storefrontClient } from "../lib/callShopify";
-import unsplash from "../lib/callUnsplash";
+import { storefrontClient, getCollections } from "../lib/callShopify";
+import transformContent from "../lib/transform-content";
 import styles from "../styles/Home.module.css";
 import Page from "../components/Page";
 
 const Home = (props: any) => {
-  // console.log(props);
+  console.log(props);
   return (
     <div className={styles.container}>
       <Page
@@ -20,22 +20,8 @@ const Home = (props: any) => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const sections = [
     {
-      name: "collection_list",
-      collections: [
-        "Westside",
-        "Dynamic Discs",
-        "Innova",
-        "Gateway",
-        "Discmania",
-      ],
-      config: {
-        enlarge_first: false,
-        action: "x_scroll",
-      },
-    },
-    {
       name: "image_banner",
-      image: require("../public/banners/banner-hearse-purple.jpg").default,
+      image: "banner-hearse-purple.jpg",
       config: {
         objectFit: "contain",
         layout: "responsive",
@@ -43,101 +29,28 @@ export const getStaticProps: GetStaticProps = async (context) => {
     },
     {
       name: "collection_list",
-      collections: ["Dry-Fits", "T-Shirts", "Accessories"],
+      collections: ["Featured"],
       config: {
         enlarge_first: true,
-        action: "standard",
+        action: "flex",
       },
     },
     {
-      name: "collection_list",
-      collections: [
-        "Dynamic Discs",
-        "Westside",
-        "Innova",
-        "Gateway",
-        "Discmania",
-      ],
+      name: "product_list_by_tags",
+      products: [],
+      tags: ["Featured"],
       config: {
         enlarge_first: false,
-        action: "x_scroll_then_grid",
+        action: "basic_grid",
       },
     },
   ];
 
-  const allCollections = sections
-    .filter((section) => section.collections)
-    .map((section: any) => section.collections)
-    .flat();
-
-  const unique = [...new Set(allCollections)];
-  const collectionQuery = unique
-    .map((c: string) => `title:"${c}"`)
-    .join(" OR ");
-  // console.log(collectionQuery);
-
-  // console.log(unique);
-
-  const response: any = await storefrontClient.query({
-    data: {
-      query: `query ($first: Int, $query: String) {
-        collections(first: $first, query: $query) {
-          edges {
-            node {
-              id
-              title
-              handle
-              image {
-                height
-                width
-                id
-                url
-                src
-                altText
-              }
-            }
-          }
-        }
-      }`,
-      variables: {
-        first: unique.length,
-        query: collectionQuery,
-      },
-    },
-  });
-
-  const collectionData = response.body.data.collections.edges.map(
-    ({ node }: { node: any }) => node
-  );
-
-  const sectionsWithData = sections.map((section) => {
-    let newCollections = null;
-    if (section.collections) {
-      newCollections = section.collections.map((c) =>
-        collectionData.find((cd: any) => cd.title === c)
-      );
-    }
-    return {
-      ...section,
-      collections: newCollections,
-    };
-  });
-
-  // console.log(sectionsWithData);
-
-  // const photos = await unsplash.search.getCollections({
-  //   query: "cat",
-  //   page: 1,
-  //   perPage: 2,
-  // });
-
-  // console.log(photos.response);
+  const content = await transformContent(sections);
 
   return {
     props: {
-      collections: response.body,
-      sections: sectionsWithData,
-      // photos: photos.response,
+      sections: content,
     },
   };
 };

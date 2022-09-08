@@ -18,8 +18,8 @@ const getStyles = ({
   };
 
   const basic_grid = {
-    container: `w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2`,
-    child: `flex flex-col group border`,
+    container: `w-full grid grid-cols-2 sm:grid-cols-3 gap-2`,
+    child: `flex flex-col group border w-full`,
     img_container: `relative w-full aspect-[1/1]`,
     title: `w-full text-center`,
   };
@@ -109,7 +109,7 @@ export default function ProductList({
   const { data } = useAvailability({
     titles: filteredProducts.map((p: any) => p.title),
   });
-  console.log(data);
+  // console.log(data);
   return (
     <div className={`w-full p-2 ${className}`}>
       {heading && <h3 className="my-2 text-xl">{heading}</h3>}

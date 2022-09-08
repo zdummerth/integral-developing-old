@@ -33,6 +33,13 @@ const getStyles = ({
     title: `absolute bottom-0 bg-black/50 text-white w-full p-6 text-lg group-hover:text-xl group-hover:bg-purple-900/75`,
   };
 
+  const flex = {
+    container: `w-full max-w-2xl p-4 flex justify-center`,
+    child: `relative border group bg-black w-full aspect-[1/1] sm:w-96 hover:cursor-pointer`,
+    img_container: `relative w-full h-full`,
+    title: `absolute bottom-0 bg-black/50 text-white w-full p-6 text-lg group-hover:text-xl group-hover:bg-purple-900/75`,
+  };
+
   switch (action) {
     case "x_scroll": {
       return x_scroll;
@@ -42,6 +49,9 @@ const getStyles = ({
     }
     case "x_scroll_then_grid": {
       return x_scroll_then_grid;
+    }
+    case "flex": {
+      return flex;
     }
     default: {
       return standard;

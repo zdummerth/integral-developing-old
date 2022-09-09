@@ -10,7 +10,10 @@ const LineItem = ({ image, name }) => {
       <div className="relative w-20 h-20 mr-2">
         <Image src={image.src} alt={"test"} layout="fill" objectFit="contain" />
       </div>
-      <div>{`${name} added to cart`}</div>
+      <div className="flex flex-col items-center">
+        <div>{`${name}`}</div>
+        <div>added to cart</div>
+      </div>
     </div>
   );
 };
@@ -34,15 +37,15 @@ const VariantPicker = ({
 
   const handleSelectChange = (e) => {
     const selectedTitle = e.target.value;
-    const selectedVariant = product.variants.edges.find(
-      ({ node }) => node.title === selectedTitle
+    const selectedVariant = product.variants.find(
+      (v) => v.title === selectedTitle
     );
 
     console.log(selectedVariant);
     if (selectedVariant) {
-      setCurrentVariant(selectedVariant.node);
-      if (selectedVariant.node?.image) {
-        setCurrentImage(selectedVariant.node.image);
+      setCurrentVariant(selectedVariant);
+      if (selectedVariant?.image) {
+        setCurrentImage(selectedVariant.image);
       }
     }
   };
@@ -74,7 +77,9 @@ const VariantPicker = ({
           <div className="">
             <LineItem
               image={currentVariant.image}
-              name={currentVariant.title}
+              name={`${product.title} - ${
+                currentVariant.title !== "Default Title" && currentVariant.title
+              }`}
             />
           </div>,
           {
@@ -106,22 +111,24 @@ const VariantPicker = ({
       <div className="">
         <Price price={currentVariant.priceV2.amount} />
       </div>
-      <div className="my-4">
-        <p>Select Details</p>
-        <select
-          name="variant_select"
-          id="variant_select"
-          onChange={handleSelectChange}
-          value={currentVariant.title}
-          className={`p-2 bg-black w-full mt-2`}
-        >
-          {product.variants.edges.map(({ node }) => (
-            <option key={node.id} value={node.title} data-variant-id={node.id}>
-              {node.title}
-            </option>
-          ))}
-        </select>
-      </div>
+      {currentVariant.title !== "Default Title" && (
+        <div className="my-4">
+          <p>Select Details</p>
+          <select
+            name="variant_select"
+            id="variant_select"
+            onChange={handleSelectChange}
+            value={currentVariant.title}
+            className={`p-2 bg-black w-full mt-2`}
+          >
+            {product.variants.map((v) => (
+              <option key={v.id} value={v.title} data-variant-id={v.id}>
+                {v.title}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div className="">
         <div>
@@ -203,16 +210,12 @@ const Thumbnails = ({
     </div>
   );
 };
-const Product = ({ product }) => {
-  // console.log("product", product);
-  const variants = product.variants.edges.map(({ node }) => node);
-  const firstAvailableVariant = product.variants.edges.find(
-    ({ node }) => node.availableForSale
-  );
+const Product = ({ product, recommendedProducts }) => {
+  console.log("product", recommendedProducts);
+  const { variants, images } = product;
+  const firstAvailableVariant = variants.find((v) => v.availableForSale);
 
-  const [currentVariant, setCurrentVariant] = useState(
-    firstAvailableVariant.node
-  );
+  const [currentVariant, setCurrentVariant] = useState(firstAvailableVariant);
 
   const [currentImage, setCurrentImage] = useState(product.images[0]);
 
@@ -237,12 +240,18 @@ const Product = ({ product }) => {
       </div>
 
       <div className="p-2 w-full max-w-md place-self-center">
-        <VariantPicker
-          product={product}
-          currentVariant={currentVariant}
-          setCurrentVariant={setCurrentVariant}
-          setCurrentImage={setCurrentImage}
-        />
+        {currentVariant ? (
+          <VariantPicker
+            product={product}
+            currentVariant={currentVariant}
+            setCurrentVariant={setCurrentVariant}
+            setCurrentImage={setCurrentImage}
+          />
+        ) : (
+          <div className="text-xl border border-red-700 p-4 text-center">
+            Sold Out
+          </div>
+        )}
         {product.descriptionHtml && (
           <div
             dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}

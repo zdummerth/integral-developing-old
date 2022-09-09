@@ -14,7 +14,7 @@ const CartContextProvider = ({ children }) => {
   };
 
   const [cart, updateCart] = useState(initialCartState);
-  console.log({ cart });
+  // console.log({ cart });
 
   const setLoading = (loading, loadingLineItems = []) =>
     updateCart((prev) => ({ ...prev, loading, loadingLineItems }));

@@ -72,6 +72,7 @@ const Page = ({
                 <ProductCard
                   key={ind + section.product.title}
                   product={section.product}
+                  recommendedProducts={section.recommendedProducts}
                 />
               );
             }

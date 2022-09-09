@@ -1,10 +1,12 @@
 import { storefrontClient } from "../../lib/callShopify";
+import transformContent from "../../lib/transform-content";
+
 import Page from "../../components/Page";
 
-function Product({ product, sections }) {
+function Product({ title, sections }) {
   return (
     <div>
-      <Page title={product.title} sections={sections} />
+      <Page title={title} sections={sections} />
     </div>
   );
 }
@@ -35,137 +37,21 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const product = await storefrontClient.query({
-    data: {
-      query: `query getProduct($handle: String!) {
-        product(handle: $handle) {
-          id
-          title
-          handle
-          publishedAt
-          availableForSale
-          tags
-          title
-          totalInventory
-          descriptionHtml
-          metafield(namespace: "custom", key: "paragraphs") {
-            namespace
-            value
-          }
-          featuredImage {
-            altText
-            height
-            id
-            src
-            width
-          }
-          images(first: 5) {
-            edges {
-              node {
-                altText
-                height
-                id
-                src
-                width
-              }
-            }
-          }
-          variants(first: 30) {
-            edges {
-              node {
-                id
-                availableForSale
-                title
-                image {
-                  altText
-                  height
-                  id
-                  src
-                  width
-                }
-                priceV2 {
-                  amount
-                  currencyCode
-                }
-              }
-            }
-          }
-        }
-      }`,
-      variables: {
-        handle: params.handle,
-      },
-    },
-  });
-
-  const relatedProductsQuery = product.body.data.product.tags
-    .map((c) => `tag:${c}`)
-    .join(" OR ");
-  console.log("related; ", relatedProductsQuery);
-
-  const relatedProducts = await storefrontClient.query({
-    data: {
-      query: `query getRelatedProducts($first: Int!, $query: String!) {
-        products(first: $first, query: $query) {
-          edges {
-            node {
-              id
-              title
-              handle
-              publishedAt
-              tags
-              title
-              totalInventory
-              descriptionHtml
-              images(first: 2) {
-                edges {
-                  node {
-                    altText
-                    height
-                    id
-                    src
-                    url
-                    width
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      `,
-      variables: {
-        first: 4,
-        query: `(${relatedProductsQuery}) AND -title:"${product.body.data.product.title}"`,
-      },
-    },
-  });
-
   const sections = [
     {
       name: "product_card",
-      product: {
-        ...product.body.data.product,
-        images: product.body.data.product.images.edges.map(({ node }) => node),
-      },
-    },
-    {
-      name: "product_list",
-      heading: "You May Also Like",
-      className: "mt-24",
-      products: relatedProducts.body.data.products.edges.map(({ node }) => ({
-        ...node,
-        images: node.images.edges.map(({ node }) => node),
-      })),
-      config: {
-        enlarge_first: false,
-        action: "basic_grid",
-      },
+      handle: params.handle,
+      showRelatedProducts: true,
     },
   ];
 
+  // const availabilty = await getProductAvailabilty(product.body.data.product.id);
+  // console.log(availabilty);
+
+  const content = await transformContent(sections);
+  const productTitle = content.find((c) => c.name === "product_card")?.title;
   return {
-    props: { product: product.body.data.product, sections },
+    props: { sections: content, title: productTitle ? productTitle : null },
   };
 }
 

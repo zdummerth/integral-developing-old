@@ -42,7 +42,7 @@ export default function LineItem({ lineItem }) {
   };
 
   const { merchandise } = lineItem;
-  console.log(merchandise);
+  // console.log(merchandise);
   const imgSrc = merchandise.image?.src;
   //   const qtyAvailble =
   //     merchandise.quantityAvailable === 0 ? 100 : merchandise.quantityAvailable;

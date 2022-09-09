@@ -55,6 +55,18 @@ const Page = ({
                 />
               );
             }
+            case "collection_full": {
+              return (
+                <ProductList
+                  key={ind}
+                  collection={section.collection}
+                  heading={section.heading}
+                  className={section.className}
+                  products={section.collection.products}
+                  config={section.config}
+                />
+              );
+            }
             case "product_card": {
               return (
                 <ProductCard

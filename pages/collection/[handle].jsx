@@ -1,5 +1,6 @@
 import { storefrontClient } from "../../lib/callShopify";
 import Page from "../../components/Page";
+import transformContent from "../../lib/transform-content";
 
 export default function CollectionPage({ collection, products, sections }) {
   console.log({ sections });
@@ -12,71 +13,22 @@ export default function CollectionPage({ collection, products, sections }) {
 
 export async function getStaticProps({ params }) {
   // console.log(params.id)
-
-  const response = await storefrontClient.query({
-    data: {
-      query: `query getCollectionByHandle($handle: String!) {
-        collectionByHandle(handle: $handle) {
-          id
-          handle
-          title
-          products(first: 20) {
-            edges {
-              node {
-                id
-                title
-                handle
-                tags
-                options {
-                  name
-                  values
-                }
-                images(first: 5) {
-                  edges {
-                    node {
-                      altText
-                      height
-                      id
-                      src
-                      width
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      `,
-      variables: {
-        handle: params.handle,
-      },
-    },
-  });
-
-  const products = response.body.data.collectionByHandle.products.edges.map(
-    ({ node }) => ({
-      ...node,
-      images: node.images.edges.map(({ node }) => node),
-    })
-  );
-
   const sections = [
     {
-      name: "product_list",
-      products,
-      collection: response.body.data.collectionByHandle,
+      name: "collection_full",
+      collection: params.handle,
       config: {
         enlarge_first: false,
         action: "basic_grid",
       },
     },
   ];
+
+  const content = await transformContent(sections);
+
   return {
     props: {
-      collection: response.body.data.collectionByHandle,
-      products,
-      sections,
+      sections: content,
     },
   };
 }

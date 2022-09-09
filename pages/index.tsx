@@ -63,15 +63,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
         action: "x_scroll_then_grid",
       },
     },
-    // {
-    //   name: "product_list_by_tags",
-    //   products: [],
-    //   tags: ["Featured"],
-    //   config: {
-    //     enlarge_first: false,
-    //     action: "basic_grid",
-    //   },
-    // },
+    {
+      name: "product_list_by_tags",
+      products: [],
+      tags: ["Featured"],
+      config: {
+        enlarge_first: false,
+        action: "basic_grid",
+      },
+    },
   ];
 
   const content = await transformContent(sections);

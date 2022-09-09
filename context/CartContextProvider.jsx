@@ -14,6 +14,7 @@ const CartContextProvider = ({ children }) => {
   };
 
   const [cart, updateCart] = useState(initialCartState);
+  console.log({ cart });
 
   const setLoading = (loading, loadingLineItems = []) =>
     updateCart((prev) => ({ ...prev, loading, loadingLineItems }));
@@ -39,7 +40,7 @@ const CartContextProvider = ({ children }) => {
 
     if (existingCartID && existingCartID !== "undefined") {
       try {
-        console.log("finding cart", existingCartID);
+        // console.log("finding cart", existingCartID);
         setLoading(true);
 
         const foundCart = await callApi("/api/shopify-graphql", "POST", {

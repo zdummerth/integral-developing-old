@@ -104,7 +104,7 @@ export default function ProductList({
     filterOn === "all"
       ? products
       : products.filter((p: any) => p.tags.includes(filterOn));
-  console.log(tags);
+  // console.log(tags);
 
   const { data } = useAvailability({
     titles: filteredProducts.map((p: any) => p.title),
@@ -113,22 +113,24 @@ export default function ProductList({
   return (
     <div className={`w-full p-2 ${className}`}>
       {heading && <h3 className="my-2 text-xl">{heading}</h3>}
-      <div>
-        <div>Filter</div>
-        <select
-          onChange={(e: any) => setFilterOn(e.target.value)}
-          value={filterOn}
-          className="bg-black"
-        >
-          <option value="all">All</option>
+      {config.showFilters && (
+        <div>
+          <div>Filter</div>
+          <select
+            onChange={(e: any) => setFilterOn(e.target.value)}
+            value={filterOn}
+            className="bg-black"
+          >
+            <option value="all">All</option>
 
-          {tags.map((t: any) => (
-            <option value={t} key={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-      </div>
+            {tags.map((t: any) => (
+              <option value={t} key={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
       <div className={styles.container}>
         {filteredProducts.map((c: any, ind: number) => (
           <Product key={c.id} product={c} config={styles} />

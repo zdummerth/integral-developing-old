@@ -1,6 +1,8 @@
 import CollectionList from "../components/products/CollectionList";
 import ProductList from "../components/products/ProductList";
 import ProductCard from "../components/products/ProductCard";
+import Text from "../components/Text";
+import Block from "../components/Block";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
@@ -8,12 +10,14 @@ import Header from "../components/Navigation";
 
 interface PageProps {
   sections: any;
+  blocks: any;
   title?: string;
   description?: string;
   children?: JSX.Element;
 }
 const Page = ({
   sections = [],
+  blocks = [],
   title = "Title",
   description = "Page Description",
   children,
@@ -32,7 +36,10 @@ const Page = ({
       >
         <Header />
         {children}
-        {sections.map((section: any, ind: number) => {
+        {blocks.map((block: any, ind: Number) => (
+          <Block key={JSON.stringify(block)} content={block} />
+        ))}
+        {/* {sections.map((section: any, ind: number) => {
           switch (section.name) {
             case "collection_list": {
               return (
@@ -76,6 +83,9 @@ const Page = ({
                 />
               );
             }
+            case "text": {
+              return <Text key={ind} content={section.content} />;
+            }
             case "image_banner": {
               return (
                 <div key={ind} className="relative w-full">
@@ -95,7 +105,7 @@ const Page = ({
               return <div key={ind}>Unable to find section</div>;
             }
           }
-        })}
+        })} */}
       </main>
 
       <footer className={styles.footer}></footer>

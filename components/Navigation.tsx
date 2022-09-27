@@ -7,7 +7,7 @@ export default function Header() {
 
   return (
     <div className="w-full">
-      <nav className="w-full p-4 mb-2 border-b-2 lg:flex lg:justify-end">
+      <nav className="w-full p-4 border-b-2 lg:flex lg:justify-end">
         <section className="MOBILE-MENU flex items-center justify-around w-full lg:hidden">
           <div
             className="HAMBURGER-ICON space-y-2"

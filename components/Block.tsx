@@ -1,16 +1,20 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
+import ProductList from "./products/ProductList";
 
 export default function Block({ content }: { content: any }) {
   const Children = ({ childarray }: any): any =>
     childarray.map((child: any, ind: Number) => {
-      return (
-        <Block key={ind + child.value ? child.value : ""} content={child} />
-      );
+      return <Block key={JSON.stringify(child)} content={child} />;
     });
 
   // console.log(content);
   switch (content.type) {
+    case "frag":
+      return (
+        <>{content.children && <Children childarray={content.children} />}</>
+      );
     case "div":
       return (
         <div className={content.className}>
@@ -82,6 +86,18 @@ export default function Block({ content }: { content: any }) {
           />
         </div>
       );
+    case "product_list_by_tags": {
+      return (
+        <ProductList
+          key={JSON.stringify(content)}
+          collection={content.collection}
+          heading={content.heading}
+          className={content.className}
+          products={content.products}
+          config={content.config}
+        />
+      );
+    }
     default:
       return null;
   }

@@ -4,9 +4,10 @@ import transformContent from "../../lib/transform-content";
 import Page from "../../components/Page";
 
 function Product({ title, sections }) {
+  // console.log(sections);
   return (
     <div>
-      <Page title={title} sections={sections} />
+      <Page title={title} blocks={sections} />
     </div>
   );
 }
@@ -39,7 +40,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const sections = [
     {
-      name: "product_card",
+      type: "product_card",
       handle: params.handle,
       showRelatedProducts: true,
     },

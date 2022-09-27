@@ -3,7 +3,7 @@ import transformContent from "../lib/transform-content";
 import Page from "../components/Page";
 
 const Home = (props: any) => {
-  // console.log(props);
+  console.log(props);
   return (
     <div className="">
       <Page
@@ -19,14 +19,48 @@ const Home = (props: any) => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const sections = [
     {
-      type: "image",
-      imageUuid: "fd3431aa-386f-4f77-ae4e-4b1639f75c87",
-      image: {
-        alttext: "Disc Market Logo",
-        objectFit: "contain",
-        layout: "responsive",
-      },
-      wrapperClassName: "relative w-full",
+      type: "div",
+      className:
+        "w-full md:flex md:items-center bg-gradient-to-br from-black via-black to-emerald-500",
+      children: [
+        {
+          type: "image",
+          imageUuid: "fd3431aa-386f-4f77-ae4e-4b1639f75c87",
+          image: {
+            alttext: "Disc Market Logo",
+            objectFit: "contain",
+            layout: "responsive",
+          },
+          wrapperClassName: "relative w-full",
+        },
+        {
+          type: "div",
+          className: "w-full text-center max-w-2xl p-4",
+          children: [
+            {
+              type: "h1",
+              value: "The Disc Market",
+              className: "text-3xl",
+            },
+            {
+              type: "h3",
+              value: "Community and Sustainability",
+              className: "text-xl my-2",
+            },
+            {
+              type: "p",
+              value:
+                "At The Disc Market, we believe in giving back to the communities that provide so much to the game of disc golf. That is why 75% of all profits are donated to local clubs and new course development.",
+              className: "my-2",
+            },
+            {
+              type: "p",
+              value:
+                "We also strive to make our products in the most sustainable way possible. We do this by creating products on demand and using organic or recycled material for our apparel.",
+            },
+          ],
+        },
+      ],
     },
 
     // {
@@ -39,36 +73,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
     // },
     {
       type: "div",
-      className: "text-center",
+      className: "text-center w-full my-8",
       children: [
         {
-          type: "h1",
-          value: "The Disc Market",
-          className: "text-3xl",
-        },
-        {
           type: "h2",
-          value: "This is what we are",
+          value: "Featured Products",
           className: "text-2xl",
         },
         {
-          type: "ul",
-          value: "",
-          className: "list-disc",
-          children: [
-            {
-              type: "li",
-              value: "list item 1",
-            },
-            {
-              type: "li",
-              value: "list item 2",
-            },
-            {
-              type: "li",
-              value: "list item 3",
-            },
-          ],
+          type: "product_list_by_tags",
+          tags: ["Featured"],
+          config: {
+            enlarge_first: "false",
+            action: "standard",
+          },
         },
       ],
     },

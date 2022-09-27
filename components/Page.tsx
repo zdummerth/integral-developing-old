@@ -1,6 +1,6 @@
 import CollectionList from "../components/products/CollectionList";
 import ProductList from "../components/products/ProductList";
-import ProductCard from "../components/products/ProductCard";
+import ProductCardAlt from "../components/products/ProductCardAlt";
 import Text from "../components/Text";
 import Block from "../components/Block";
 import Head from "next/head";
@@ -26,7 +26,7 @@ const Page = ({
   return (
     <>
       <Head>
-        <title>{`Dark Ace Disc Golf | ${title}`}</title>
+        <title>{`The Disc Market | ${title}`}</title>
         <meta name="description" content={description} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -36,76 +36,46 @@ const Page = ({
       >
         <Header />
         {children}
-        {blocks.map((block: any, ind: Number) => (
+        {/* {blocks.map((block: any, ind: Number) => (
           <Block key={JSON.stringify(block)} content={block} />
-        ))}
-        {/* {sections.map((section: any, ind: number) => {
-          switch (section.name) {
+        ))} */}
+        {blocks.map((block: any, ind: number) => {
+          switch (block.type) {
             case "collection_list": {
               return (
                 <CollectionList
-                  key={ind}
-                  collections={section.collections}
-                  config={section.config}
-                />
-              );
-            }
-            case "product_list_by_tags": {
-              return (
-                <ProductList
-                  key={ind}
-                  collection={section.collection}
-                  heading={section.heading}
-                  className={section.className}
-                  products={section.products}
-                  config={section.config}
+                  key={JSON.stringify(block)}
+                  collections={block.collections}
+                  config={block.config}
                 />
               );
             }
             case "collection_full": {
               return (
                 <ProductList
-                  key={ind}
-                  collection={section.collection}
-                  heading={section.heading}
-                  className={section.className}
-                  products={section.collection.products}
-                  config={section.config}
+                  key={JSON.stringify(block)}
+                  collection={block.collection}
+                  heading={block.heading}
+                  className={block.className}
+                  products={block.collection.products}
+                  config={block.config}
                 />
               );
             }
             case "product_card": {
               return (
-                <ProductCard
-                  key={ind + section.product.title}
-                  product={section.product}
-                  recommendedProducts={section.recommendedProducts}
+                <ProductCardAlt
+                  key={JSON.stringify(block)}
+                  product={block.product}
+                  recommendedProducts={block.recommendedProducts}
                 />
               );
             }
-            case "text": {
-              return <Text key={ind} content={section.content} />;
-            }
-            case "image_banner": {
-              return (
-                <div key={ind} className="relative w-full">
-                  <Image
-                    src={section.image.originalFileUrl}
-                    width={section.image.contentInfo.image.width}
-                    height={section.image.contentInfo.image.height}
-                    alt="Vercel Logo"
-                    blurDataURL={section.image.blurDataURL}
-                    placeholder="blur"
-                    layout="responsive"
-                  />
-                </div>
-              );
-            }
             default: {
-              return <div key={ind}>Unable to find section</div>;
+              return <Block key={JSON.stringify(block)} content={block} />;
             }
           }
-        })} */}
+        })}
       </main>
 
       <footer className={styles.footer}></footer>

@@ -9,14 +9,14 @@ import styles from "../styles/Home.module.css";
 import Header from "../components/Navigation";
 
 interface PageProps {
-  sections: any;
   blocks: any;
+  navdata: any;
   title?: string;
   description?: string;
   children?: JSX.Element;
 }
 const Page = ({
-  sections = [],
+  navdata = [],
   blocks = [],
   title = "Title",
   description = "Page Description",
@@ -34,22 +34,13 @@ const Page = ({
       <main
         className={`${styles.main} bg-zinc-900 text-white max-w-6xl mx-auto flex flex-col items-center`}
       >
-        <Header />
+        <Header blocks={navdata} />
         {children}
         {/* {blocks.map((block: any, ind: Number) => (
           <Block key={JSON.stringify(block)} content={block} />
         ))} */}
         {blocks.map((block: any, ind: number) => {
           switch (block.type) {
-            case "collection_list": {
-              return (
-                <CollectionList
-                  key={JSON.stringify(block)}
-                  collections={block.collections}
-                  config={block.config}
-                />
-              );
-            }
             case "collection_full": {
               return (
                 <ProductList

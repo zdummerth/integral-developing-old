@@ -1,14 +1,15 @@
 import type { GetStaticProps } from "next";
 import transformContent from "../lib/transform-content";
+import getNavData from "../lib/get-navigation-data";
 import Page from "../components/Page";
 
 const Home = (props: any) => {
-  console.log(props);
+  // console.log(props);
   return (
     <div className="">
       <Page
-        sections={props.sections}
         blocks={props.sections}
+        navdata={props.navdata}
         title={props.seo.title}
         description={props.seo.description}
       />
@@ -98,10 +99,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 
   const content = await transformContent(sections);
+  const navdata = await getNavData();
+  // console.log(navdata);
 
   return {
     props: {
       sections: content,
+      navdata,
       seo,
     },
   };

@@ -6,7 +6,7 @@ export default function CollectionPage({ collection, products, sections }) {
   console.log({ sections });
   return (
     <div>
-      <Page sections={sections} />
+      <Page blocks={sections} />
     </div>
   );
 }
@@ -15,7 +15,7 @@ export async function getStaticProps({ params }) {
   // console.log(params.id)
   const sections = [
     {
-      name: "collection_full",
+      type: "collection_full",
       collection: params.handle,
       config: {
         enlarge_first: false,

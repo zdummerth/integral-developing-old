@@ -30,7 +30,7 @@ const getStyles = ({
       ${enlarge_first && `first:sm:col-span-6 first:sm:row-span-6`}
       `,
     img_container: `relative w-full h-full`,
-    title: `absolute bottom-0 bg-black/50 text-white w-full p-6 text-lg group-hover:text-xl group-hover:bg-purple-900/75`,
+    title: `absolute bottom-0 bg-black/50 text-white w-full p-6 text-lg group-hover:text-xl group-hover:bg-emerald-500/75`,
   };
 
   const x_scroll_then_grid = {
@@ -39,7 +39,7 @@ const getStyles = ({
       ${enlarge_first && `first:sm:col-span-6 first:sm:row-span-6`}
       `,
     img_container: `relative w-full h-full`,
-    title: `absolute bottom-0 bg-black/50 text-white w-full p-6 text-lg group-hover:text-xl group-hover:bg-purple-900/75`,
+    title: `absolute bottom-0 bg-black/50 text-white w-full p-6 text-lg group-hover:text-xl group-hover:bg-emerald-500/75`,
   };
 
   switch (action) {

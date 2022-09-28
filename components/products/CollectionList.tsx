@@ -15,6 +15,13 @@ const getStyles = ({
     title: `w-full text-center w-24`,
   };
 
+  const basic = {
+    container: `flex flex-wrap w-full p-2 justify-center`,
+    child: `relative flex-shrink-0 mr-2 flex flex-col items-center group`,
+    img_container: `relative w-20 h-20 rounded-full overflow-hidden border`,
+    title: `w-full text-center w-24`,
+  };
+
   const standard = {
     container: `w-full max-w-5xl p-4 grid grid-cols-9 gap-2`,
     child: `relative border group bg-black aspect-[1/1] col-span-full sm:col-span-3 sm:row-span-3 hover:cursor-pointer
@@ -43,6 +50,9 @@ const getStyles = ({
   switch (action) {
     case "x_scroll": {
       return x_scroll;
+    }
+    case "basic": {
+      return basic;
     }
     case "standard": {
       return standard;

@@ -2,8 +2,10 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import ProductList from "./products/ProductList";
+import CollectionList from "../components/products/CollectionList";
 
 export default function Block({ content }: { content: any }) {
+  // console.log(content);
   const Children = ({ childarray }: any): any =>
     childarray.map((child: any, ind: Number) => {
       return <Block key={JSON.stringify(child)} content={child} />;
@@ -98,7 +100,29 @@ export default function Block({ content }: { content: any }) {
         />
       );
     }
+    case "collection_list": {
+      return (
+        <CollectionList
+          key={JSON.stringify(content)}
+          collections={content.collections}
+          config={content.config}
+        />
+      );
+    }
+    case "collection_full": {
+      return (
+        <ProductList
+          key={JSON.stringify(content)}
+          collection={content.collection}
+          heading={content.heading}
+          className={content.className}
+          products={content.collection.products}
+          config={content.config}
+        />
+      );
+    }
     default:
+      // console.log("in default block: ", content);
       return null;
   }
 }

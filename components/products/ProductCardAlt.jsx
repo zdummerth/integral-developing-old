@@ -277,13 +277,13 @@ const Product = ({ product, recommendedProducts }) => {
 
           <button
             onClick={prevImage}
-            className="absolute left-0 z-5 text-black text-3xl"
+            className="absolute h-full p-4 left-0 z-5 text-black text-3xl"
           >
             {"<"}
           </button>
           <button
             onClick={nextImage}
-            className="absolute right-0 z-5 text-black text-3xl"
+            className="absolute h-full p-4 right-0 z-5 text-black text-3xl"
           >
             {">"}
           </button>

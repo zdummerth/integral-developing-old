@@ -1,8 +1,13 @@
 import { useState } from "react"; // import state
 import Link from "next/link";
 import Cart from "./Cart";
+import Block from "../components/Block";
 
-export default function Header() {
+interface HeaderProps {
+  blocks: any;
+}
+export default function Header({ blocks }: HeaderProps) {
+  // console.log("nav blocks", blocks);
   const [isNavOpen, setIsNavOpen] = useState(false); // initiate isNavOpen state with false
 
   return (
@@ -41,7 +46,10 @@ export default function Header() {
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </div>
-            <ul className="MENU-LINK-MOBILE-OPEN flex flex-col items-center justify-between min-h-[250px]">
+            {blocks.map((b: any) => (
+              <Block key={JSON.stringify(b)} content={b} />
+            ))}
+            <ul className="flex flex-col items-center justify-between min-h-[250px]">
               <li className="border-b border-gray-400 my-8 uppercase">
                 <Link href="/">
                   <a>Home</a>

@@ -1,13 +1,14 @@
 import { storefrontClient } from "../../lib/callShopify";
 import transformContent from "../../lib/transform-content";
+import getNavData from "../../lib/get-navigation-data";
 
 import Page from "../../components/Page";
 
-function Product({ title, sections }) {
+function Product({ title, sections, navdata }) {
   // console.log(sections);
   return (
     <div>
-      <Page title={title} blocks={sections} />
+      <Page title={title} blocks={sections} navdata={navdata} />
     </div>
   );
 }
@@ -50,9 +51,14 @@ export async function getStaticProps({ params }) {
   // console.log(availabilty);
 
   const content = await transformContent(sections);
+  const navdata = await getNavData();
   const productTitle = content.find((c) => c.name === "product_card")?.title;
   return {
-    props: { sections: content, title: productTitle ? productTitle : null },
+    props: {
+      sections: content,
+      title: productTitle ? productTitle : null,
+      navdata,
+    },
   };
 }
 

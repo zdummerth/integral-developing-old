@@ -63,18 +63,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
         },
       ],
     },
-
-    // {
-    //   type: "collection_list",
-    //   collections: ["Dry-Fits", "T-Shirts", "Accessories"],
-    //   config: {
-    //     enlarge_first: true,
-    //     action: "standard",
-    //   },
-    // },
     {
       type: "div",
-      className: "text-center w-full my-8",
+      className: "w-full my-8 p-2",
       children: [
         {
           type: "h2",
@@ -100,7 +91,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const content = await transformContent(sections);
   const navdata = await getNavData();
-  // console.log(navdata);
 
   return {
     props: {

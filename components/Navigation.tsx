@@ -2,6 +2,8 @@ import { useState } from "react"; // import state
 import Link from "next/link";
 import Cart from "./Cart";
 import Block from "../components/Block";
+import HomeIcon from "../components/icons/Home";
+import Home from "../pages";
 
 interface HeaderProps {
   blocks: any;
@@ -22,6 +24,11 @@ export default function Header({ blocks }: HeaderProps) {
             <span className="block h-0.5 w-8 animate-pulse bg-gray-600"></span>
             <span className="block h-0.5 w-8 animate-pulse bg-gray-600"></span>
           </div>
+          <Link href="/">
+            <a>
+              <HomeIcon />
+            </a>
+          </Link>
           <Cart />
 
           <div

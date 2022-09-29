@@ -111,7 +111,7 @@ export default function ProductList({
   });
   // console.log(data);
   return (
-    <div className={`w-full p-2 ${className}`}>
+    <div className={`w-full ${className}`}>
       {heading && <h3 className="my-2 text-xl">{heading}</h3>}
       {config.showFilters && (
         <div>

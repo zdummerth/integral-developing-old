@@ -1,12 +1,13 @@
 import { storefrontClient } from "../../lib/callShopify";
 import Page from "../../components/Page";
 import transformContent from "../../lib/transform-content";
+import getNavData from "../../lib/get-navigation-data";
 
-export default function CollectionPage({ collection, products, sections }) {
+export default function CollectionPage({ sections, navdata }) {
   console.log({ sections });
   return (
     <div>
-      <Page blocks={sections} />
+      <Page blocks={sections} navdata={navdata} />
     </div>
   );
 }
@@ -25,10 +26,12 @@ export async function getStaticProps({ params }) {
   ];
 
   const content = await transformContent(sections);
+  const navdata = await getNavData();
 
   return {
     props: {
       sections: content,
+      navdata,
     },
   };
 }

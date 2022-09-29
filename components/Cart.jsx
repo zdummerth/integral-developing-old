@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useCart } from "../context/CartContextProvider";
 import LineItem from "./LineItem";
 import Price from "./products/Price";
+import CartIcon from "../components/icons/Cart";
 
 export default function CartComponent() {
   const {
@@ -23,7 +24,8 @@ export default function CartComponent() {
         onClick={() => toggleCart(true)}
         className="flex"
       >
-        <div>Cart</div>
+        {/* <div>Cart</div> */}
+        <CartIcon />
         <div className="ml-2">{`(${cartLength})`}</div>
       </button>
       {isCartOpen && (

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ProductList from "./products/ProductList";
 import CollectionList from "../components/products/CollectionList";
+import Form from "../components/forms/Form";
 
 export default function Block({ content }: { content: any }) {
   // console.log(content);
@@ -120,6 +121,9 @@ export default function Block({ content }: { content: any }) {
           config={content.config}
         />
       );
+    }
+    case "form": {
+      return <Form key={JSON.stringify(content)} inputs={content.inputs} />;
     }
     default:
       // console.log("in default block: ", content);

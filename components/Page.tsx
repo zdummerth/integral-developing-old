@@ -1,7 +1,7 @@
 import CollectionList from "../components/products/CollectionList";
 import ProductList from "../components/products/ProductList";
 import ProductCardAlt from "../components/products/ProductCardAlt";
-import Text from "../components/Text";
+import Form from "../components/forms/Form";
 import Block from "../components/Block";
 import Head from "next/head";
 import Image from "next/image";
@@ -32,7 +32,7 @@ const Page = ({
       </Head>
 
       <main
-        className={`${styles.main} bg-zinc-900 text-white max-w-6xl mx-auto flex flex-col items-center`}
+        className={`${styles.main} bg-zinc-900 text-white max-w-6xl mx-auto flex flex-col items-center w-full`}
       >
         <Header blocks={navdata} />
         {children}

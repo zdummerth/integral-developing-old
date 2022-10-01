@@ -63,11 +63,6 @@ export default function Header({ blocks }: HeaderProps) {
                 </Link>
               </li>
               <li className="border-b border-gray-400 my-8 uppercase">
-                <Link href="/">
-                  <a>Collections</a>
-                </Link>
-              </li>
-              <li className="border-b border-gray-400 my-8 uppercase">
                 <a href="/contact">Contact</a>
               </li>
             </ul>
@@ -78,11 +73,6 @@ export default function Header({ blocks }: HeaderProps) {
           <li>
             <Link href="/">
               <a>Home</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/">
-              <a>Collections</a>
             </Link>
           </li>
           <li>

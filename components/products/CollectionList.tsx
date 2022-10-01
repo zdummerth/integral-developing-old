@@ -98,12 +98,12 @@ export default function CollectionList({
   collections: any;
   config?: any;
 }) {
-  const styles = getStyles(config);
+  // const styles = getStyles(config);
   return (
     <>
-      <div className={styles.container}>
+      <div className={config.list_container}>
         {collections.map((c: any, ind: number) => (
-          <Collection key={c.id} collection={c} config={styles} />
+          <Collection key={c.id} collection={c} config={config} />
         ))}
       </div>
     </>

@@ -22,7 +22,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     {
       type: "div",
       className:
-        "w-full md:flex md:items-center bg-gradient-to-br from-black via-black to-emerald-500",
+        "w-full md:flex md:items-center bg-gradient-to-br from-black via-black to-emerald-500 font-sans",
       children: [
         {
           type: "image",
@@ -41,12 +41,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
             {
               type: "h1",
               value: "The Disc Market",
-              className: "text-3xl",
+              className: "text-3xl font-serif",
             },
             {
               type: "h3",
               value: "Community and Sustainability",
-              className: "text-xl my-2",
+              className: "text-xl my-2 font-serif",
             },
             {
               type: "p",

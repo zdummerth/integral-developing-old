@@ -1,5 +1,7 @@
 import { storefrontClient } from "../../lib/callShopify";
 import transformContent from "../../lib/transform-content";
+import { getPageByHandle } from "../../lib/callFauna";
+
 import getNavData from "../../lib/get-navigation-data";
 
 import Page from "../../components/Page";
@@ -39,18 +41,22 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const sections = [
-    {
-      type: "product_card",
-      handle: params.handle,
-      showRelatedProducts: true,
-    },
-  ];
+  const pageData = await getPageByHandle({ handle: "product_template" });
+
+  const sectionsWithHandle = pageData.sections.map((s) => {
+    if (s.type === "product_card") {
+      return {
+        ...s,
+        handle: params.handle,
+      };
+    }
+    return s;
+  });
 
   // const availabilty = await getProductAvailabilty(product.body.data.product.id);
   // console.log(availabilty);
 
-  const content = await transformContent(sections);
+  const content = await transformContent(sectionsWithHandle);
   const navdata = await getNavData();
   const productTitle = content.find((c) => c.name === "product_card")?.title;
   return {

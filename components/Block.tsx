@@ -53,6 +53,13 @@ export default function Block({ content }: { content: any }) {
           {content.children && <Children childarray={content.children} />}
         </p>
       );
+    case "span":
+      return (
+        <span className={content.className}>
+          {content.value && content.value}
+          {content.children && <Children childarray={content.children} />}
+        </span>
+      );
     case "ul":
       return (
         <ul className={content.className}>

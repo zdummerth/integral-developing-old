@@ -32,7 +32,7 @@ const Page = ({
       </Head>
 
       <main
-        className={`${styles.main} bg-zinc-900 text-white max-w-6xl mx-auto flex flex-col items-center w-full`}
+        className={`${styles.main} relative bg-zinc-900 text-white max-w-6xl mx-auto flex flex-col items-center w-full`}
       >
         <Header blocks={navdata} />
         {children}

@@ -13,8 +13,8 @@ export default function Header({ blocks }: HeaderProps) {
   const [isNavOpen, setIsNavOpen] = useState(false); // initiate isNavOpen state with false
 
   return (
-    <div className="w-full">
-      <nav className="w-full p-4 border-b-2 lg:flex lg:justify-end">
+    <div className="w-full z-20 bg-black/80">
+      <nav className="w-full p-4 lg:flex lg:justify-end">
         <section className="MOBILE-MENU flex items-center justify-around w-full lg:hidden">
           <div
             className="HAMBURGER-ICON space-y-2"

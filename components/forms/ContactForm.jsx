@@ -35,7 +35,7 @@ const ContactForm = () => {
   if (submitState.submitted) {
     return (
       <div className="flex-col fai-c">
-        <div>Thank you for your message. We'll get back to you soon.</div>
+        <div>{"Thank you for your message. We'll get back to you soon."}</div>
         <div className="mt-l border std-div">
           <button onClick={handleReset}>Reset Form</button>
         </div>

@@ -1,15 +1,15 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import CartContextProvider from "../context/CartContextProvider";
 import { ToastContainer } from "react-toastify";
+import Layout from "../components/Layout";
 import "react-toastify/dist/ReactToastify.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <CartContextProvider>
+    <Layout>
       <ToastContainer position="top-center" theme="dark" />
       <Component {...pageProps} />
-    </CartContextProvider>
+    </Layout>
   );
 }
 

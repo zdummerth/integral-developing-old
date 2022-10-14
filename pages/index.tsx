@@ -1,145 +1,126 @@
 import type { GetStaticProps } from "next";
-import transformContent from "../lib/transform-content";
-import { getPageByHandle } from "../lib/callFauna";
-import getNavData from "../lib/get-navigation-data";
-import Page from "../components/Page";
+import Seo from "../components/Seo";
+import Image from "next/image";
+import logoImg from "../public/id-logo.png";
+import keyboardImg from "../public/keyboard.jpg";
+import daLogoImg from "../public/da-logo.png";
+import dmLogoImg from "../public/dm-logo.png";
+import moneyImg from "../public/money-map.jpg";
+import ExternalLink from "../components/icons/ExternalLink";
 
-const Home = (props: any) => {
-  // console.log(props);
+interface PageProps {
+  title: string;
+  description: string;
+}
+
+interface LinkProps {
+  label: string;
+  href: string;
+}
+const StyledLink = (props: LinkProps) => (
+  <a
+    className="flex rounded p-2 my-2 bg-gradient-to-b from-transparent to-[#00ff3aff]"
+    href={props.href}
+  >
+    <span className="pr-2">{props.label}</span>
+    <ExternalLink />
+  </a>
+);
+
+const Home = (props: PageProps) => {
   return (
-    <div className="">
-      <Page
-        blocks={props.sections}
-        navdata={props.navdata}
-        title={props.seo.title}
-        description={props.seo.description}
-      />
-    </div>
+    <>
+      <Seo title={props.title} description={props.description} />
+      <div className="relative w-screen h-screen max-w-[1800px]">
+        <h1 className="flex flex-col items-center justify-center absolute left-10 top-20 w-1/2 z-20">
+          <span className="text-4xl py-4 font-serif">Integral</span>
+          <span className="relative w-full max-w-[500px]">
+            <Image
+              src={logoImg}
+              placeholder="blur"
+              alt="Integral Developing Logo"
+              layout="responsive"
+              priority
+            />
+          </span>
+          <span className="text-4xl py-4 font-serif">Developing</span>
+        </h1>
+        <div className="bg-gradient-to-b from-transparent to-[#00ff3aff]/50 absolute w-full h-full top-0 left-0 z-10" />
+        <Image
+          src={keyboardImg}
+          placeholder="blur"
+          alt="Keyboard Background Image"
+          layout="fill"
+          objectFit="cover"
+        />
+      </div>
+      <div className="py-4 text-center w-full">
+        <h2 className="text-2xl">Our Projects</h2>
+
+        <h3 className="text-xl underline py-4 my-4">Finance</h3>
+        <span className="block relative w-3/4 mx-auto">
+          <Image
+            src={moneyImg}
+            placeholder="blur"
+            alt="Spending Tracker Logo"
+            layout="responsive"
+          />
+          <h4>Spending Tracker</h4>
+          <div className="flex justify-between">
+            <StyledLink label={"View Site"} href="/" />
+            <StyledLink label={"View Github"} href="/" />
+          </div>
+        </span>
+
+        <h3 className="text-xl underline py-4 my-4">Ecommerce</h3>
+        <div className="grid grid-cols-1 gap-4 justify-items-center md:grid-cols-2">
+          <span className="block relative w-3/4">
+            <Image
+              src={daLogoImg}
+              placeholder="blur"
+              alt="Dark Ace Logo"
+              layout="responsive"
+            />
+            <h4>{"Dark Ace Disc Golf (Shopify)"}</h4>
+            <div className="flex justify-center">
+              <StyledLink
+                label={"View Site"}
+                href="https://darkacediscgolf.com/"
+              />
+            </div>
+          </span>
+          <span className="relative w-3/4">
+            <div className="relative bg-white/50">
+              <Image
+                src={dmLogoImg}
+                placeholder="blur"
+                alt="Disc Market Logo"
+                layout="responsive"
+              />
+            </div>
+            <h4>{"The Disc Market (Next JS)"}</h4>
+            <div className="flex justify-between">
+              <StyledLink
+                label={"View Site"}
+                href="https://www.thediscmarket.com/"
+              />
+              <StyledLink label={"View Github"} href="/" />
+            </div>
+          </span>
+        </div>
+      </div>
+    </>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
   const seo = {
     title: "Home",
-    description: "Welcome to the disc market",
+    description: "Welcome to Integral Developing",
   };
-
-  const pageData: any = await getPageByHandle({ handle: "/" });
-
-  const testsections = [
-    {
-      type: "div",
-      className: "relative w-full h-screen",
-      children: [
-        {
-          type: "image",
-          imageUuid: "9aa25d06-95bf-4de5-beeb-9ac8f5fac3fe",
-          image: {
-            alttext: "Disc Market Background Image",
-            objectFit: "cover",
-            layout: "fill",
-          },
-          wrapperClassName: "relative w-full h-full",
-        },
-        {
-          type: "div",
-          className: "bg-black/60 w-full h-full absolute top-0 left-0 z-10",
-          children: [
-            {
-              type: "h1",
-              // value: "The Disc Market",
-              className:
-                "absolute top-[15%] left-10 text-5xl font-serif md:left-1/4",
-              children: [
-                {
-                  type: "span",
-                  className: "block drop-shadow shadow-red-900",
-                  value: "The",
-                },
-                {
-                  type: "span",
-                  className: "block",
-                  value: "Disc",
-                },
-                {
-                  type: "span",
-                  className: "block",
-                  value: "Market",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: "div",
-      className:
-        "w-full flex items-center flex-col md:flex-row md:justify-center py-8",
-      children: [
-        {
-          type: "image",
-          imageUuid: "fd3431aa-386f-4f77-ae4e-4b1639f75c87",
-          image: {
-            alttext: "Disc Market Logo",
-            objectFit: "contain",
-            layout: "responsive",
-          },
-          wrapperClassName: "relative w-48",
-        },
-        {
-          type: "div",
-          className: "w-full text-center max-w-2xl p-4",
-          children: [
-            {
-              type: "h3",
-              value: "Community and Sustainability",
-              className: "text-xl my-2 font-serif",
-            },
-            {
-              type: "p",
-              value:
-                "At The Disc Market, we believe in giving back to the communities that provide so much to the game of disc golf. That is why 75% of all profits are donated to local clubs and new course development.",
-              className: "my-2",
-            },
-            {
-              type: "p",
-              value:
-                "We also strive to make our products in the most sustainable way possible. We do this by creating products on demand and using organic or recycled material for our apparel.",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      type: "div",
-      className: "w-full py-8 px-2 bg-gradient-to-br from-black to-stone-800",
-      children: [
-        {
-          type: "h2",
-          value: "Featured Products",
-          className: "text-2xl py-4",
-        },
-        {
-          type: "product_list_by_tags",
-          tags: ["Featured"],
-          config: {
-            enlarge_first: "false",
-            action: "standard",
-          },
-        },
-      ],
-    },
-  ];
-
-  const content = await transformContent(testsections);
-  // const content = await transformContent(pageData.sections);
-  const navdata = await getNavData();
 
   return {
     props: {
-      sections: content,
-      navdata,
       seo,
     },
   };

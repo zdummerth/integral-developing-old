@@ -7,6 +7,7 @@ import daLogoImg from "../public/da-logo.png";
 import dmLogoImg from "../public/dm-logo.png";
 import moneyImg from "../public/money-map.jpg";
 import ExternalLink from "../components/icons/ExternalLink";
+import { motion } from "framer-motion";
 
 interface PageProps {
   title: string;
@@ -31,19 +32,30 @@ const Home = (props: PageProps) => {
   return (
     <>
       <Seo title={props.title} description={props.description} />
-      <div className="relative w-screen h-screen max-w-[1800px]">
-        <h1 className="flex flex-col items-center justify-center absolute left-10 top-20 w-1/2 z-20">
-          <span className="text-4xl py-4 font-serif">Integral</span>
-          <span className="relative w-full max-w-[500px]">
-            <Image
-              src={logoImg}
-              placeholder="blur"
-              alt="Integral Developing Logo"
-              layout="responsive"
-              priority
-            />
-          </span>
-          <span className="text-4xl py-4 font-serif">Developing</span>
+      <div className="relative w-screen h-screen max-w-[1800px] flex flex-col items-center justify-center">
+        <h1 className="flex flex-col items-center justify-center absolute w-1/2 z-20">
+          <motion.div
+            initial={{ rotate: 360 }}
+            animate={{ rotate: 0 }}
+            // transition={{ duration: 5 }}
+            whileHover={{
+              scale: 1.2,
+              transition: { duration: 0.5 },
+            }}
+            className="text-center"
+          >
+            <div className="text-4xl font-serif">Integral</div>
+            <div className="text-4xl font-serif mb-4">Developing</div>
+            <span className="relative w-full max-w-[500px]">
+              <Image
+                src={logoImg}
+                placeholder="blur"
+                alt="Integral Developing Logo"
+                layout="responsive"
+                priority
+              />
+            </span>
+          </motion.div>
         </h1>
         <div className="bg-gradient-to-b from-transparent to-[#00ff3aff]/50 absolute w-full h-full top-0 left-0 z-10" />
         <Image

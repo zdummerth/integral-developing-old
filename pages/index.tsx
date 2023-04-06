@@ -33,38 +33,58 @@ const Home = (props: PageProps) => {
     <>
       <Seo title={props.title} description={props.description} />
       <div className="relative w-screen h-screen max-w-[1800px] flex flex-col items-center justify-center">
-        <h1 className="flex flex-col items-center justify-center absolute w-1/2 z-20">
-          <motion.div
-            initial={{ rotate: 360 }}
-            animate={{ rotate: 0 }}
-            // transition={{ duration: 5 }}
-            whileHover={{
-              scale: 1.2,
-              transition: { duration: 0.5 },
+        <div className="text-center absolute z-20 w-full flex flex-col items-center justify-center">
+          <motion.h1
+            className="text-5xl lg:text-7xl"
+            layout
+            initial={{ textShadow: "0px 0px 0px #000", y: -100, opacity: 0 }}
+            animate={{
+              transition: { duration: 1.5, ease: "easeInOut" },
+              opacity: 1,
+              y: -20,
+              textShadow: `0 1px 0 #000, 0 2px 0 #000, 0 3px 0 #000, 0 4px 0 #000, 0 5px 0 #000, 0 6px 0 #000, 0 7px 0 #000, 0 8px 0 #000, 0 9px 0 #000, 0 50px 30px rgba(0, 0, 0, 0.3)`,
             }}
-            className="text-center"
           >
-            <div className="text-4xl font-serif">Integral</div>
-            <div className="text-4xl font-serif mb-4">Developing</div>
-            <span className="relative w-full max-w-[500px]">
-              <Image
-                src={logoImg}
-                placeholder="blur"
-                alt="Integral Developing Logo"
-                layout="responsive"
-                priority
-              />
-            </span>
+            <span className="font-serif mb-4 block">Integral</span>
+            <span className="font-serif mb-8 block">Developing</span>
+          </motion.h1>
+          <motion.div
+            className="relative w-3/4 max-w-[500px]"
+            initial={{ opacity: 0, y: 100 }}
+            layout
+            animate={{
+              opacity: 1,
+              y: 0,
+              transition: {
+                duration: 1.5,
+                ease: "easeInOut",
+              },
+            }}
+          >
+            <Image
+              src={logoImg}
+              placeholder="blur"
+              alt="Integral Developing Logo"
+              priority
+            />
           </motion.div>
-        </h1>
+        </div>
         <div className="bg-gradient-to-b from-transparent to-[#00ff3aff]/50 absolute w-full h-full top-0 left-0 z-10" />
-        <Image
-          src={keyboardImg}
-          placeholder="blur"
-          alt="Keyboard Background Image"
-          layout="fill"
-          objectFit="cover"
-        />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: 1,
+            transition: { duration: 1.5, ease: "easeInOut", delay: 1.0 },
+          }}
+        >
+          <Image
+            src={keyboardImg}
+            placeholder="blur"
+            alt="Keyboard Background Image"
+            layout="fill"
+            objectFit="cover"
+          />
+        </motion.div>
       </div>
       <div className="py-4 text-center w-full">
         <h2 className="text-2xl">Our Projects</h2>
